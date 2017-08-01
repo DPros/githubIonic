@@ -1,37 +1,41 @@
-import { Component, ViewChild } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
-import { Platform, MenuController, Nav } from 'ionic-angular';
+import {MenuController, Platform, Tabs} from 'ionic-angular';
 
-import { HelloIonicPage } from '../pages/hello-ionic/hello-ionic';
-import { ListPage } from '../pages/list/list';
+import {HelloIonicPage} from '../pages/hello-ionic/hello-ionic';
+import {BeerListPage} from '../pages/beer-list/beer-list';
 
-import { StatusBar } from '@ionic-native/status-bar';
-import { SplashScreen } from '@ionic-native/splash-screen';
-
+import {StatusBar} from '@ionic-native/status-bar';
+import {SplashScreen} from '@ionic-native/splash-screen';
+import {BeerDetailsPage} from "../pages/beer-details/beer-details";
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Tabs) tabsCtrl: Tabs;
 
   // make HelloIonicPage the root (or first) page
-  rootPage = HelloIonicPage;
-  pages: Array<{title: string, component: any}>;
+  pages: Array<{ title: string, component: any }>;
+  tabs: Array<{ title: string, root: any }>;
+  tabZeroHasBeenLoaded = false;
 
-  constructor(
-    public platform: Platform,
-    public menu: MenuController,
-    public statusBar: StatusBar,
-    public splashScreen: SplashScreen
-  ) {
+  constructor(public platform: Platform,
+              public menu: MenuController,
+              public statusBar: StatusBar,
+              public splashScreen: SplashScreen,) {
     this.initializeApp();
 
     // set our app's pages
     this.pages = [
-      { title: 'Hello Ionic', component: HelloIonicPage },
-      { title: 'My First List', component: ListPage }
+      {title: 'Hello Ionic', component: HelloIonicPage},
+      {title: 'My First List', component: BeerListPage}
     ];
+    this.tabs = [
+      { title: "Main", root: HelloIonicPage },
+      { title: "Add", root: BeerDetailsPage},
+      { title: "Beers", root: BeerListPage }
+    ]
   }
 
   initializeApp() {
@@ -46,7 +50,9 @@ export class MyApp {
   openPage(page) {
     // close the menu when clicking a link from the menu
     this.menu.close();
-    // navigate to the new page if it is not the current page
-    this.nav.setRoot(page.component);
+    if (this.tabsCtrl.getSelected() !== this.tabsCtrl.getByIndex(0)) {
+      this.tabsCtrl.select(0);
+    }
+    this.tabsCtrl.getByIndex(0).setRoot(page.component);
   }
 }

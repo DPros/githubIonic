@@ -1,0 +1,28 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left *ngIf="!selectedItem">
+      <button ion-button (click)="closeBeerForm()" *ngIf="!selectedItem" icon-only style="padding: 10px">
+        <ion-icon name="close"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title *ngIf="!selectedItem">One More Beer!</ion-title>
+    <ion-title *ngIf="selectedItem">{{selectedItem.name}}</ion-title>
+    <ion-buttons right>
+      <button ion-button (click)="saveBeer()" color="primary" *ngIf="!selectedItem">Save</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form" style="display: flex">
+    <img src="https://avatars1.githubusercontent.com/u/15451214?v=4&s=40" style="height: 10rem; width: 10rem"/>
+    <div style="flex: auto;">
+      <ion-item>
+        <ion-input placeholder="Brand" [readonly]="selectedItem" formControlName="brand"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input placeholder="Name" [readonly]="selectedItem" formControlName="name"></ion-input>
+      </ion-item>
+    </div>
+  </form>
+</ion-content>
